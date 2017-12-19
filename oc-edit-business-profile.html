@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="oc-edit-business-profile">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `oc-edit-business-profile`
+     * Element for editing and updating the business profile of organisations.
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class OcEditBusinessProfile extends Polymer.Element {
+      static get is() { return 'oc-edit-business-profile'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'oc-edit-business-profile'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(OcEditBusinessProfile.is, OcEditBusinessProfile);
+  </script>
+</dom-module>
+
+
+
