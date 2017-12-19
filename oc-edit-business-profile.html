@@ -1,39 +1,256 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../oc-organisation-api/oc-organisation-api.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-styles/paper-styles.html">
+<link rel="import" href="../iron-form/iron-form.html">
+<link rel="import" href="../oc-peach-payment/oc-peach-payment-form.html">
+
+
 
 <dom-module id="oc-edit-business-profile">
   <template>
-    <style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style include="shop-button" is="custom-style">
+
       :host {
         display: block;
+        background: #fff;
+        color: #000;
+        --paper-font-subhead_-_font-size: 13px;
       }
+
+      paper-card {
+        width:100%;
+      }
+
+      .category-heading {
+        border-top: 1px #cecece solid;
+        border-bottom: 1px #cecece solid;
+        background: #f8f8f8;
+        color: #000;
+      }
+
+      h3 {
+        font-size:1.13em !important;
+        margin: 10px 0 !important;
+      }
+
+      paper-input {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top:-20px;
+      }
+
+      .update-button-row {
+        background: #ffffff;
+        margin: 15px 0;
+      }
+      .update-button {
+        width: 100%;
+        color: #fff;
+        background: #2BB673;
+      }
+
     </style>
-    <h2>Hello [[prop1]]!</h2>
+
+    <oc-organisation-api id="organisationApi"></oc-organisation-api>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row category-heading">
+            <div class="col-xs-12">
+              <h3>Business Profile</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-5">
+              <p>Company Name</p>
+            </div>
+            <div class="col-xs-7">
+              <paper-input type="text"  value="[[_businessProfile.name]]"></paper-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-5">
+              <p>Company Code</p>
+            </div>
+            <div class="col-xs-7">
+              <paper-input value="[[_businessProfile.code]]"></paper-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-5">
+              <p>Notification Email Address</p>
+            </div>
+            <div class="col-xs-7">
+              <paper-input type="email" value="[[_businessProfile.notificationSourceEmail]]" label="[[_businessProfile.notificationSourceEmail]]"></paper-input>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row category-heading">
+        <div class="col-xs-12">
+          <h3>Billing Profile</h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <p>Business Name</p>
+        </div>
+        <div class="col-xs-7">
+          <paper-input type="text" value="[[_billingProfile.businessName]]"></paper-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <p>Vat Number</p>
+        </div>
+        <div class="col-xs-7">
+          <paper-input prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"value="[[_billingProfile.vatNumber]]"></paper-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <p>Contact Name</p>
+        </div>
+        <div class="col-xs-7">
+          <paper-input type="text" value="[[_billingProfile.contactName]]"></paper-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <p>Address</p>
+        </div>
+        <div class="col-xs-7">
+          <paper-input type="text" value="[[_billingProfile.address]]"></paper-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <p>Contact Name</p>
+        </div>
+        <div class="col-xs-7">
+          <paper-input type="text" value="[[_billingProfile.contactName]]"></paper-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <p>Phone Number</p>
+        </div>
+        <div class="col-xs-7">
+          <paper-input prevent-invalid-input auto-validate allowed-pattern="[0-9 +]" value="[[_billingProfile.phoneNumber]]"></paper-input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <p>Email</p>
+        </div>
+        <div class="col-xs-7">
+          <paper-input type="email" value="[[_billingProfile.email]]"></paper-input>
+        </div>
+      </div>
+      <!--TODO: dom if you already have a business account -->
+      <div class="row category-heading">
+        <div class="col-xs-12 text-center update-button-row">
+          <paper-button class="update-button" on-tap="_updateOrganisationDetails">Update Business Profile</paper-button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
   </template>
 
   <script>
-    /**
-     * `oc-edit-business-profile`
-     * Element for editing and updating the business profile of organisations.
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-    class OcEditBusinessProfile extends Polymer.Element {
-      static get is() { return 'oc-edit-business-profile'; }
-      static get properties() {
-        return {
-          prop1: {
-            type: String,
-            value: 'oc-edit-business-profile'
+      /**
+       * `oc-link-payment-account`
+       * Element to link payment accounts
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class OcEditBusinessProfile extends Polymer.Element {
+          static get is() {
+              return 'oc-edit-business-profile';
           }
-        };
+
+          static get properties() {
+              return {
+                  /**
+                   * User ID to be passed
+                   */
+                  userId: {
+                      type: Number,
+                      value:  OC.identity.userId
+                  },
+                  /**
+                   * Object for capturing the account to be fetched
+                   */
+
+
+                  value: String,
+                  _loading: {
+                      type: Boolean,
+                      value: false,
+                      notify: true
+                  },
+
+              };
+          }
+
+          ready() {
+              super.ready();
+              this._init();
+          }
+
+          _init() {
+              this._getOrganisationByHeader();
+          }
+
+          _getOrganisationByHeader() {
+              this.$.organisationApi.getOrganisationByHeader()
+                  .then(function(request){
+                      this._businessProfile = request.response;
+                      this._billingProfile = request.response.billingProfile;
+                  }.bind(this));
+          }
+
+
+          _updateOrganisationDetails() {
+
+              data = {};
+              data.code = organisation.code;
+              data.types = organisation.type;
+//
+//                data.billingProfile.vatNumber = "";
+//                data.billingProfile.contactName = "";
+//                data.billingProfile.phoneNumber = "";
+//                data.billingProfile.email = "";
+
+              this.$.organisationApi.updateOrganisationDetails()
+                  .then(function (request)
+                  {
+                      this._getOrganisation()
+                  }.bind(this))
+          }
+
+
       }
-    }
 
-    window.customElements.define(OcEditBusinessProfile.is, OcEditBusinessProfile);
+      window.customElements.define(OcEditBusinessProfile.is, OcEditBusinessProfile);
   </script>
+
 </dom-module>
-
-
-
