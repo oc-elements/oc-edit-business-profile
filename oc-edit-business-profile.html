@@ -138,15 +138,6 @@
 
       <div class="row">
         <div class="col-xs-5">
-          <p>Contact Name</p>
-        </div>
-        <div class="col-xs-7">
-          <paper-input type="text" value="[[_billingProfile.contactName]]"></paper-input>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-5">
           <p>Phone Number</p>
         </div>
         <div class="col-xs-7">
@@ -232,13 +223,17 @@
           _updateOrganisationDetails() {
 
               data = {};
-              data.code = organisation.code;
-              data.types = organisation.type;
-//
-//                data.billingProfile.vatNumber = "";
-//                data.billingProfile.contactName = "";
-//                data.billingProfile.phoneNumber = "";
-//                data.billingProfile.email = "";
+              data.name = _businessProfile.name;
+              data.code = _businessProfile.code;
+              data.types = _businessProfile.type;
+              data.notificationSourceEmail = _businessProfile.data;
+
+              data.billingProfile.businessName = _billingProfile.businessName;
+              data.billingProfile.vatNumber = _billingProfile.vatNumber;
+              data.billingProfile.contactName = _billingProfile.contactName;
+              data.billingProfile.address = _billingProfile.address;
+              data.billingProfile.phoneNumber = _billingProfile.phoneNumber;
+              data.billingProfile.businessName = _billingProfile.businessName;
 
               this.$.organisationApi.updateOrganisationDetails()
                   .then(function (request)
