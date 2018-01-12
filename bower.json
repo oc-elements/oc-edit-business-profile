@@ -3,7 +3,8 @@
   "description": "Element for editing and updating the business profile of organisations.",
   "main": "oc-edit-business-profile.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "oc-core-utils": "git://github.com/oc-elements/oc-core-utils#2.x"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",

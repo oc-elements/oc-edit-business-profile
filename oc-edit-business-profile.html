@@ -4,6 +4,7 @@
 <link rel="import" href="../paper-styles/paper-styles.html">
 <link rel="import" href="../iron-form/iron-form.html">
 <link rel="import" href="../oc-peach-payment/oc-peach-payment-form.html">
+<link rel="import" href="../oc-core-utils/oc-store.html">
 
 
 
@@ -173,7 +174,7 @@
        * @polymer
        * @demo demo/index.html
        */
-      class OcEditBusinessProfile extends Polymer.Element {
+      class OcEditBusinessProfile extends  Ordercloud.ReduxMixin(Polymer.Element) {
           static get is() {
               return 'oc-edit-business-profile';
           }
@@ -185,13 +186,17 @@
                    */
                   userId: {
                       type: Number,
-                      value:  OC.identity.userId
+                      statePath:  'user.user.id',
+
+                  },
+                  organisationId: {
+                      type: Number,
+                      statePath:  'organisation.id',
+                      observer: '_getOrganisation'
                   },
                   /**
                    * Object for capturing the account to be fetched
                    */
-
-
                   value: String,
                   _loading: {
                       type: Boolean,
@@ -204,15 +209,10 @@
 
           ready() {
               super.ready();
-              this._init();
           }
 
-          _init() {
-              this._getOrganisationByHeader();
-          }
-
-          _getOrganisationByHeader() {
-              this.$.organisationApi.getOrganisationByHeader()
+          _getOrganisation(organisationId) {
+              this.$.organisationApi.getOrganisation(organisationId)
                   .then(function(request){
                       this._businessProfile = request.response;
                       this._billingProfile = request.response.billingProfile;
@@ -221,6 +221,7 @@
 
 
           _updateOrganisationDetails() {
+
 
               data = {};
               data.name = _businessProfile.name;
@@ -235,7 +236,7 @@
               data.billingProfile.phoneNumber = _billingProfile.phoneNumber;
               data.billingProfile.businessName = _billingProfile.businessName;
 
-              this.$.organisationApi.updateOrganisationDetails()
+              this.$.organisationApi.updateOrganisationDetails(this.organisationId , data)
                   .then(function (request)
                   {
                       this._getOrganisation()
