@@ -70,7 +70,7 @@
                             <p>Company Name</p>
                         </div>
                         <div class="col-xs-7">
-                            <paper-input type="text" value="[[_businessProfile.name]]"></paper-input>
+                            <paper-input type="text" value="{{_businessProfile.name}}"></paper-input>
                         </div>
                     </div>
 
@@ -79,7 +79,7 @@
                             <p>Company Code</p>
                         </div>
                         <div class="col-xs-7">
-                            <paper-input value="[[_businessProfile.code]]"></paper-input>
+                            <paper-input value="{{_businessProfile.code}}"></paper-input>
                         </div>
                     </div>
 
@@ -88,7 +88,7 @@
                             <p>Notification Email Address</p>
                         </div>
                         <div class="col-xs-7">
-                            <paper-input type="email" value="[[_businessProfile.notificationSourceEmail]]"
+                            <paper-input type="email" value="{{_businessProfile.notificationSourceEmail}}"
                                          label="[[_businessProfile.notificationSourceEmail]]"></paper-input>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                     <p>Business Name</p>
                 </div>
                 <div class="col-xs-7">
-                    <paper-input type="text" value="[[_billingProfile.businessName]]"></paper-input>
+                    <paper-input type="text" value="{{_billingProfile.businessName}}"></paper-input>
                 </div>
             </div>
 
@@ -117,7 +117,7 @@
                 </div>
                 <div class="col-xs-7">
                     <paper-input prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
-                                 value="[[_billingProfile.vatNumber]]"></paper-input>
+                                 value="{{_billingProfile.vatNumber}}"></paper-input>
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
                     <p>Contact Name</p>
                 </div>
                 <div class="col-xs-7">
-                    <paper-input type="text" value="[[_billingProfile.contactName]]"></paper-input>
+                    <paper-input type="text" value="{{_billingProfile.contactName}}"></paper-input>
                 </div>
             </div>
 
@@ -135,7 +135,7 @@
                     <p>Address</p>
                 </div>
                 <div class="col-xs-7">
-                    <paper-input type="text" value="[[_billingProfile.address]]"></paper-input>
+                    <paper-input type="text" value="{{_billingProfile.address}}"></paper-input>
                 </div>
             </div>
 
@@ -145,7 +145,7 @@
                 </div>
                 <div class="col-xs-7">
                     <paper-input prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
-                                 value="[[_billingProfile.phoneNumber]]"></paper-input>
+                                 value="{{_billingProfile.phoneNumber}}"></paper-input>
                 </div>
             </div>
 
@@ -154,7 +154,7 @@
                     <p>Email</p>
                 </div>
                 <div class="col-xs-7">
-                    <paper-input type="email" value="[[_billingProfile.email]]"></paper-input>
+                    <paper-input type="email" value="{{_billingProfile.email}}"></paper-input>
                 </div>
             </div>
             <!--TODO: dom if you already have a business account -->
@@ -185,23 +185,11 @@
 
             static get properties() {
                 return {
-                    /**
-                     * User ID to be passed
-                     */
-                    userId: {
-                        type: Number,
-                        statePath: 'identity.user.id',
-
-                    },
-                    organisationId: {
+                    _organisationId: {
                         type: Number,
                         statePath: 'organisation.id',
                         observer: '_getOrganisation'
                     },
-                    /**
-                     * Object for capturing the account to be fetched
-                     */
-                    value: String,
                     _loading: {
                         type: Boolean,
                         value: false,
@@ -227,22 +215,22 @@
             _updateOrganisationDetails() {
 
 
-                data = {};
-                data.name = _businessProfile.name;
-                data.code = _businessProfile.code;
-                data.types = _businessProfile.type;
-                data.notificationSourceEmail = _businessProfile.data;
+                let data = {};
+                data.name =  this._businessProfile.name;
+                data.code = this._businessProfile.code;
+                data.types = this._businessProfile.type;
+                data.notificationSourceEmail = this._businessProfile.data;
 
-                data.billingProfile.businessName = _billingProfile.businessName;
-                data.billingProfile.vatNumber = _billingProfile.vatNumber;
-                data.billingProfile.contactName = _billingProfile.contactName;
-                data.billingProfile.address = _billingProfile.address;
-                data.billingProfile.phoneNumber = _billingProfile.phoneNumber;
-                data.billingProfile.businessName = _billingProfile.businessName;
+                data.billingProfile = {}
+                data.billingProfile.businessName = this._billingProfile.businessName;
+                data.billingProfile.vatNumber = this._billingProfile.vatNumber;
+                data.billingProfile.contactName = this._billingProfile.contactName;
+                data.billingProfile.address = this._billingProfile.address;
+                data.billingProfile.phoneNumber = this._billingProfile.phoneNumber;
 
-                this.$.organisationApi.updateOrganisationDetails(this.organisationId, data)
+                this.$.organisationApi.updateOrganisation(this._organisationId, data)
                     .then(function (request) {
-                        this._getOrganisation()
+                        this._getOrganisation(this._organisationId)
                     }.bind(this))
             }
 
