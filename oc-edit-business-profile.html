@@ -1,6 +1,5 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../oc-organisation-api/oc-organisation-api.html">
-<link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="../paper-styles/paper-styles.html">
 <link rel="import" href="../iron-form/iron-form.html">
 <link rel="import" href="../oc-peach-payment/oc-peach-payment-form.html">
@@ -16,11 +15,6 @@
                 display: block;
                 background: #fff;
                 color: #000;
-                --paper-font-subhead_-_font-size: 13px;
-            }
-
-            paper-card {
-                width: 100%;
             }
 
             .category-heading {
@@ -33,13 +27,6 @@
             h3 {
                 font-size: 1.13em !important;
                 margin: 10px 0 !important;
-            }
-
-            paper-input {
-                font-family: 'Roboto', 'Noto', sans-serif;
-                font-size: 13px;
-                line-height: 1.5;
-                margin-top: -20px;
             }
 
             .update-button-row {
@@ -67,29 +54,21 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-5">
-                            <p>Company Name</p>
-                        </div>
-                        <div class="col-xs-7">
-                            <paper-input type="text" value="{{_businessProfile.name}}"></paper-input>
+                            <paper-input type="text" label="Company Name"
+                                         value="{{_businessProfile.name}}"></paper-input>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-xs-5">
-                            <p>Company Code</p>
-                        </div>
-                        <div class="col-xs-7">
-                            <paper-input value="{{_businessProfile.code}}"></paper-input>
+                            <paper-input label="Company Code" value="{{_businessProfile.code}}"></paper-input>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-xs-5">
-                            <p>Notification Email Address</p>
-                        </div>
-                        <div class="col-xs-7">
                             <paper-input type="email" value="{{_businessProfile.notificationSourceEmail}}"
-                                         label="[[_businessProfile.notificationSourceEmail]]"></paper-input>
+                                         label="Email"></paper-input>
                         </div>
                     </div>
 
@@ -104,57 +83,40 @@
 
             <div class="row">
                 <div class="col-xs-5">
-                    <p>Business Name</p>
-                </div>
-                <div class="col-xs-7">
-                    <paper-input type="text" value="{{_billingProfile.businessName}}"></paper-input>
+                    <paper-input label="Business Name" type="text"
+                                 value="{{_billingProfile.businessName}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-5">
-                    <p>Vat Number</p>
-                </div>
-                <div class="col-xs-7">
-                    <paper-input prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
+                    <paper-input label="Vat Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
                                  value="{{_billingProfile.vatNumber}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-5">
-                    <p>Contact Name</p>
-                </div>
-                <div class="col-xs-7">
-                    <paper-input type="text" value="{{_billingProfile.contactName}}"></paper-input>
+                    <paper-input label="Contact Name" type="text" value="{{_billingProfile.contactName}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-5">
-                    <p>Address</p>
-                </div>
-                <div class="col-xs-7">
-                    <paper-input type="text" value="{{_billingProfile.address}}"></paper-input>
+                    <paper-input label="Address" type="text" value="{{_billingProfile.address}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-5">
-                    <p>Phone Number</p>
-                </div>
-                <div class="col-xs-7">
-                    <paper-input prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
+                    <paper-input label="Phone Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
                                  value="{{_billingProfile.phoneNumber}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-5">
-                    <p>Email</p>
-                </div>
-                <div class="col-xs-7">
-                    <paper-input type="email" value="{{_billingProfile.email}}"></paper-input>
+                    <paper-input label="Email" type="email" value="{{_billingProfile.email}}"></paper-input>
                 </div>
             </div>
             <!--TODO: dom if you already have a business account -->
@@ -165,79 +127,77 @@
                 </div>
             </div>
         </div>
-        </div>
-        </div>
     </template>
 
     <script>
-        /**
-         * `oc-link-payment-account`
-         * Element to link payment accounts
-         *
-         * @customElement
-         * @polymer
-         * @demo demo/index.html
-         */
-        class OcEditBusinessProfile extends Ordercloud.ReduxMixin(Polymer.Element) {
-            static get is() {
-                return 'oc-edit-business-profile';
-            }
+		/**
+		 * `oc-link-payment-account`
+		 * Element to link payment accounts
+		 *
+		 * @customElement
+		 * @polymer
+		 * @demo demo/index.html
+		 */
+		class OcEditBusinessProfile extends Ordercloud.ReduxMixin(Polymer.Element) {
+			static get is() {
+				return 'oc-edit-business-profile';
+			}
 
-            static get properties() {
-                return {
-                    _organisationId: {
-                        type: Number,
-                        statePath: 'organisation.id',
-                        observer: '_getOrganisation'
-                    },
-                    _loading: {
-                        type: Boolean,
-                        value: false,
-                        notify: true
-                    },
+			static get properties() {
+				return {
+					_organisationId: {
+						type: Number,
+						statePath: 'organisation.id',
+						observer: '_getOrganisation'
+					},
+					_loading: {
+						type: Boolean,
+						value: false,
+						notify: true
+					},
 
-                };
-            }
+				};
+			}
 
-            ready() {
-                super.ready();
-            }
+			ready() {
+				super.ready();
+			}
 
-            _getOrganisation(organisationId) {
-                this.$.organisationApi.getOrganisation(organisationId)
-                    .then(function (request) {
-                        this._businessProfile = request.response;
-                        this._billingProfile = request.response.billingProfile;
-                    }.bind(this));
-            }
-
-
-            _updateOrganisationDetails() {
+			_getOrganisation(organisationId) {
+				this.$.organisationApi.getOrganisation(organisationId)
+					.then(function (request) {
+						this._businessProfile = request.response;
+						this._billingProfile = request.response.billingProfile;
+					}.bind(this));
+			}
 
 
-                let data = {};
-                data.name =  this._businessProfile.name;
-                data.code = this._businessProfile.code;
-                data.types = this._businessProfile.type;
-                data.notificationSourceEmail = this._businessProfile.data;
-
-                data.billingProfile = {}
-                data.billingProfile.businessName = this._billingProfile.businessName;
-                data.billingProfile.vatNumber = this._billingProfile.vatNumber;
-                data.billingProfile.contactName = this._billingProfile.contactName;
-                data.billingProfile.address = this._billingProfile.address;
-                data.billingProfile.phoneNumber = this._billingProfile.phoneNumber;
-
-                this.$.organisationApi.updateOrganisation(this._organisationId, data)
-                    .then(function (request) {
-                        this._getOrganisation(this._organisationId)
-                    }.bind(this))
-            }
+			_updateOrganisationDetails() {
 
 
-        }
+				let data = {};
+				data.name = this._businessProfile.name;
+				data.code = this._businessProfile.code;
+				data.types = this._businessProfile.type;
+				data.notificationSourceEmail = this._businessProfile.data;
 
-        window.customElements.define(OcEditBusinessProfile.is, OcEditBusinessProfile);
+				data.billingProfile = {}
+				data.billingProfile.businessName = this._billingProfile.businessName;
+				data.billingProfile.vatNumber = this._billingProfile.vatNumber;
+				data.billingProfile.contactName = this._billingProfile.contactName;
+				data.billingProfile.address = this._billingProfile.address;
+				data.billingProfile.phoneNumber = this._billingProfile.phoneNumber;
+
+				this.$.organisationApi.updateOrganisation(this._organisationId, data)
+					.then(function (request) {
+						this._getOrganisation(this._organisationId)
+					}.bind(this))
+			}
+
+
+		}
+
+		window.customElements.define(OcEditBusinessProfile.is, OcEditBusinessProfile);
     </script>
 
 </dom-module>
