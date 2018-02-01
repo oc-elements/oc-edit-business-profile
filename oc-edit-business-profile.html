@@ -29,15 +29,11 @@
                 margin: 10px 0 !important;
             }
 
-            .update-button-row {
-                background: #ffffff;
-                margin: 15px 0;
-            }
-
             .update-button {
+                background-color: #e0992f;
                 width: 100%;
-                color: #fff;
-                background: #2BB673;
+                height: 50px;
+                margin: 10px 0;
             }
 
         </style>
@@ -53,20 +49,20 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-5">
+                        <div class="col-xs-12">
                             <paper-input type="text" label="Company Name"
                                          value="{{_businessProfile.name}}"></paper-input>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-5">
+                        <div class="col-xs-12">
                             <paper-input label="Company Code" value="{{_businessProfile.code}}"></paper-input>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-5">
+                        <div class="col-xs-12">
                             <paper-input type="email" value="{{_businessProfile.notificationSourceEmail}}"
                                          label="Email"></paper-input>
                         </div>
@@ -82,46 +78,46 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-xs-12">
                     <paper-input label="Business Name" type="text"
                                  value="{{_billingProfile.businessName}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-xs-12">
                     <paper-input label="Vat Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
                                  value="{{_billingProfile.vatNumber}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-xs-12">
                     <paper-input label="Contact Name" type="text" value="{{_billingProfile.contactName}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-xs-12">
                     <paper-input label="Address" type="text" value="{{_billingProfile.address}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-xs-12">
                     <paper-input label="Phone Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
                                  value="{{_billingProfile.phoneNumber}}"></paper-input>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-xs-12">
                     <paper-input label="Email" type="email" value="{{_billingProfile.email}}"></paper-input>
                 </div>
             </div>
             <!--TODO: dom if you already have a business account -->
             <div class="row category-heading">
-                <div class="col-xs-12 text-center update-button-row">
+                <div class="col-xs-12 text-center">
                     <paper-button class="update-button" on-tap="_updateOrganisationDetails">Update Business Profile
                     </paper-button>
                 </div>
@@ -173,15 +169,13 @@
 
 
 			_updateOrganisationDetails() {
-
-
 				let data = {};
 				data.name = this._businessProfile.name;
 				data.code = this._businessProfile.code;
 				data.types = this._businessProfile.type;
 				data.notificationSourceEmail = this._businessProfile.data;
 
-				data.billingProfile = {}
+				data.billingProfile = {};
 				data.billingProfile.businessName = this._billingProfile.businessName;
 				data.billingProfile.vatNumber = this._billingProfile.vatNumber;
 				data.billingProfile.contactName = this._billingProfile.contactName;
@@ -193,11 +187,7 @@
 						this._getOrganisation(this._organisationId)
 					}.bind(this))
 			}
-
-
 		}
-
 		window.customElements.define(OcEditBusinessProfile.is, OcEditBusinessProfile);
     </script>
-
 </dom-module>
