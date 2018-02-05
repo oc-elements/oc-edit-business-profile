@@ -41,80 +41,85 @@
         <oc-organisation-api id="organisationApi"></oc-organisation-api>
 
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="row category-heading">
-                        <div class="col-xs-12">
-                            <h3>Business Profile</h3>
+            <template is="dom-if" if="[[!showBillingProfile]]">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="row category-heading">
+                            <div class="col-xs-12">
+                                <h3>Business Profile</h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <paper-input type="text" label="Company Name"
-                                         value="{{_businessProfile.name}}"></paper-input>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input type="text" label="Company Name"
+                                             value="{{_businessProfile.name}}"></paper-input>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <paper-input label="Company Code" value="{{_businessProfile.code}}"></paper-input>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input label="Company Code" value="{{_businessProfile.code}}"></paper-input>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <paper-input type="email" value="{{_businessProfile.notificationSourceEmail}}"
-                                         label="Email"></paper-input>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input type="email" value="{{_businessProfile.notificationSourceEmail}}"
+                                             label="Email"></paper-input>
+                            </div>
                         </div>
+
                     </div>
-
                 </div>
-            </div>
+            </template>
 
-            <div class="row category-heading">
-                <div class="col-xs-12">
-                    <h3>Billing Profile</h3>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <paper-input label="Business Name" type="text"
-                                 value="{{_billingProfile.businessName}}"></paper-input>
+            <template is="dom-if" if="[[showBillingProfile]]">
+                <div class="row category-heading">
+                    <div class="col-xs-12">
+                        <h3>Billing Profile</h3>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <paper-input label="Vat Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
-                                 value="{{_billingProfile.vatNumber}}"></paper-input>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <paper-input label="Business Name" type="text"
+                                     value="{{_billingProfile.businessName}}"></paper-input>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <paper-input label="Contact Name" type="text" value="{{_billingProfile.contactName}}"></paper-input>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <paper-input label="Vat Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
+                                     value="{{_billingProfile.vatNumber}}"></paper-input>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <paper-input label="Address" type="text" value="{{_billingProfile.address}}"></paper-input>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <paper-input label="Contact Name" type="text" value="{{_billingProfile.contactName}}"></paper-input>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <paper-input label="Phone Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
-                                 value="{{_billingProfile.phoneNumber}}"></paper-input>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <paper-input label="Address" type="text" value="{{_billingProfile.address}}"></paper-input>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <paper-input label="Email" type="email" value="{{_billingProfile.email}}"></paper-input>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <paper-input label="Phone Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
+                                     value="{{_billingProfile.phoneNumber}}"></paper-input>
+                    </div>
                 </div>
-            </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <paper-input label="Email" type="email" value="{{_billingProfile.email}}"></paper-input>
+                    </div>
+                </div>
+            </template>
             <!--TODO: dom if you already have a business account -->
             <div class="row category-heading">
                 <div class="col-xs-12 text-center">
@@ -151,7 +156,10 @@
 						value: false,
 						notify: true
 					},
-
+					showBillingProfile: {
+						type: Boolean,
+						value: false,
+					}
 				};
 			}
 
