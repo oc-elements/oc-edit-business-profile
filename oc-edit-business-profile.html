@@ -45,7 +45,6 @@
         <oc-toast id="toast"></oc-toast>
 
         <div class="container-fluid">
-            <template is="dom-if" if="[[!showBillingProfile]]">
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="row category-heading">
@@ -137,56 +136,6 @@
 
                     </div>
                 </div>
-            </template>
-
-
-            <template is="dom-if" if="[[showBillingProfile]]">
-                <div class="row category-heading">
-                    <div class="col-xs-12">
-                        <h3>Billing Profile</h3>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <paper-input label="Business Name" type="text"
-                                     value="{{_billingProfile.businessName}}"></paper-input>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <paper-input label="Vat Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
-                                     value="{{_billingProfile.vatNumber}}"></paper-input>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <paper-input label="Contact Name" type="text"
-                                     value="{{_billingProfile.contactName}}"></paper-input>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <paper-input label="Trading Address" type="text" value="{{_billingProfile.address}}"></paper-input>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <paper-input label="Phone Number" prevent-invalid-input auto-validate allowed-pattern="[0-9 +]"
-                                     value="{{_billingProfile.phoneNumber}}"></paper-input>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <paper-input label="Email" type="email" value="{{_billingProfile.email}}"></paper-input>
-                    </div>
-                </div>
-            </template>
             <!--TODO: dom if you already have a business account -->
             <div class="row category-heading">
                 <div class="col-xs-12 text-center">
@@ -245,10 +194,6 @@
 						type: Boolean,
 						value: false
 					},
-					showBillingProfile: {
-						type: Boolean,
-						value: false,
-					}
 				};
 			}
 
