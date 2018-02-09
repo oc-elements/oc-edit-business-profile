@@ -3,8 +3,11 @@
   "description": "Element for editing and updating the business profile of organisations.",
   "main": "oc-edit-business-profile.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0",
-    "oc-core-utils": "git://github.com/oc-elements/oc-core-utils#2.x"
+    "polymer": "Polymer/polymer#2.x",
+    "oc-core-utils": "git://github.com/oc-elements/oc-core-utils#2.x",
+    "oc-toast": "git://github.com/oc-elements/oc-toast#2.x",
+    "oc-geo-lookup": "git://github.com/oc-elements/oc-geo-lookup",
+    "oc-leaflet-map": "git://github.com/oc-elements/oc-leaflet-map"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",

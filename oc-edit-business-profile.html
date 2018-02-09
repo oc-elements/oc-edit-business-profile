@@ -2,8 +2,10 @@
 <link rel="import" href="../oc-organisation-api/oc-organisation-api.html">
 <link rel="import" href="../paper-styles/paper-styles.html">
 <link rel="import" href="../iron-form/iron-form.html">
-<link rel="import" href="../oc-peach-payment/oc-peach-payment-form.html">
 <link rel="import" href="../oc-core-utils/oc-store.html">
+<link rel="import" href="../oc-leaflet-map/oc-leaflet-map.html">
+<link rel="import" href="../oc-toast/oc-toast.html">
+<link rel="import" href="../oc-geo-lookup/oc-geo-lookup.html">
 
 
 <dom-module id="oc-edit-business-profile">
@@ -39,6 +41,8 @@
         </style>
 
         <oc-organisation-api id="organisationApi"></oc-organisation-api>
+        <oc-geo-lookup id="geoLookup"></oc-geo-lookup>
+        <oc-toast id="toast"></oc-toast>
 
         <div class="container-fluid">
             <template is="dom-if" if="[[!showBillingProfile]]">
@@ -66,6 +70,68 @@
                             <div class="col-xs-12">
                                 <paper-input type="email" value="{{_businessProfile.notificationSourceEmail}}"
                                              label="Email"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input id="streetNumber" type="text" label="Street Number"
+                                             value="{{_organisationAddress.streetNumber}}"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input id="streetName" type="text" label="Street Address"
+                                             value="{{_organisationAddress.streetName}}"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input id="complex" type="text" label="Complex"
+                                             value="{{_organisationAddress.complex}}"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input id="suburb" type="text" label="Suburb"
+                                             value="{{_organisationAddress.suburb}}"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input id="city" type="text" label="City"
+                                             value="{{_organisationAddress.city}}"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input id="postalCode" type="text" label="Postal Code"
+                                             value="{{_organisationAddress.postalCode}}"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input id="province" type="text" label="Province"
+                                             value="{{_organisationAddress.province}}"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <paper-input id="country" type="text" label="Country"
+                                             value="{{_organisationAddress.country}}"></paper-input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <oc-leaflet-map latitude="{{_lat}}" longitude="{{_lng}}"></oc-leaflet-map>
                             </div>
                         </div>
 
@@ -97,7 +163,8 @@
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <paper-input label="Contact Name" type="text" value="{{_billingProfile.contactName}}"></paper-input>
+                        <paper-input label="Contact Name" type="text"
+                                     value="{{_billingProfile.contactName}}"></paper-input>
                     </div>
                 </div>
 
@@ -123,7 +190,15 @@
             <!--TODO: dom if you already have a business account -->
             <div class="row category-heading">
                 <div class="col-xs-12 text-center">
-                    <paper-button class="update-button" on-tap="_updateOrganisationDetails">Update Business Profile
+                    <paper-button raised on-tap="_onValidateAddress" class="update-button" hidden="[[_addressValid]]">
+                        Validate Address
+                    </paper-button>
+                </div>
+            </div>
+            <div class="row category-heading">
+                <div class="col-xs-12 text-center">
+                    <paper-button class="update-button" on-tap="_updateOrganisationDetails" hidden="[[_addressValid]]">
+                        Update Business Profile
                     </paper-button>
                 </div>
             </div>
@@ -156,6 +231,20 @@
 						value: false,
 						notify: true
 					},
+					_lat: {
+						type: Number,
+					},
+					_lng: {
+						type: Number,
+					},
+					_organisationAddress: {
+						type: Object,
+						value: {},
+					},
+					_addressValid: {
+						type: Boolean,
+						value: false
+					},
 					showBillingProfile: {
 						type: Boolean,
 						value: false,
@@ -167,7 +256,21 @@
 				super.ready();
 			}
 
+			_onValidateAddress() {
+				const street = this._organisationAddress.streetNumber + " " + this._organisationAddress.streetName;
+				const suburb = this._organisationAddress.suburb;
+				const city = this._organisationAddress.city;
+				this.$.geoLookup.getLocation(street, suburb, city).then((request) => {
+					const diplayPosition = request.response.Response.View[0].Result[0].Location.DisplayPosition;
+				this._lat = diplayPosition.Latitude;
+				this._lng = diplayPosition.Longitude;
+
+				this.$.toast.successStay("Map pin set. Please adjust map pin if location is incorrect.")
+			})
+			}
+
 			_getOrganisation(organisationId) {
+				this._getOrganisationAddress();
 				this.$.organisationApi.getOrganisation(organisationId)
 					.then(function (request) {
 						this._businessProfile = request.response;
@@ -177,6 +280,12 @@
 
 
 			_updateOrganisationDetails() {
+				// If Address exist update current one if not create one
+				if (this._organisationAddress.id)
+					this._updateOrganisationAddress();
+				else
+					this._createOrganisationAddress();
+
 				let data = {};
 				data.name = this._businessProfile.name;
 				data.code = this._businessProfile.code;
@@ -189,13 +298,47 @@
 				data.billingProfile.contactName = this._billingProfile.contactName;
 				data.billingProfile.address = this._billingProfile.address;
 				data.billingProfile.phoneNumber = this._billingProfile.phoneNumber;
+				data.billingProfile.email = this._billingProfile.email;
 
 				this.$.organisationApi.updateOrganisation(this._organisationId, data)
-					.then(function (request) {
-						this._getOrganisation(this._organisationId)
-					}.bind(this))
+					.then((request) => {
+					this.$.toast.successStay("Business Profile Updated");
+			})
+			}
+
+			_getOrganisationAddress() {
+				this.$.organisationApi.getAddress(this._organisationId)
+					.then((request) => {
+					this._organisationAddress = request.response;
+				this._lat = request.response.latitude;
+				this._lng = request.response.longitude;
+			})
+			}
+
+			_updateOrganisationAddress() {
+				this._organisationAddress.longitude = this._lng;
+				this._organisationAddress.latitude = this._lat;
+				// Remove id, should not be part of the update
+				const addressObject = JSON.parse(JSON.stringify(this._organisationAddress));
+				delete addressObject.id;
+				this.$.organisationApi.updateAddress(this._organisationAddress.id, addressObject)
+					.then(() => {
+					this.$.toast.success("Business Address Updated!");
+			}).catch((e) => {
+					this.$.toast.failed("Failed To Update Business");
+				console.error(e.message)
+			})
+			}
+
+			_createOrganisationAddress() {
+				this._organisationAddress.longitude = this._lng;
+				this._organisationAddress.latitude = this._lat;
+				this.$.organisationApi.createAddress(this._organisationId, this._organisationAddress)
+					.then(() => {
+				})
 			}
 		}
+
 		window.customElements.define(OcEditBusinessProfile.is, OcEditBusinessProfile);
     </script>
 </dom-module>
