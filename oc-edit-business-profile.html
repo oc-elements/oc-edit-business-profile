@@ -60,11 +60,10 @@
                             <paper-input label="Company Code" value="{{_businessProfile.code}}"></paper-input>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-xs-12">
-                            <paper-input type="email" value="{{_businessProfile.notificationSourceEmail}}"
-                                         label="Email"></paper-input>
+                            <paper-input type="tel" value="{{_businessProfile.profile.contactNumber}}"
+                                         label="Contact Number"></paper-input>
                         </div>
                     </div>
                 </div>
@@ -73,7 +72,7 @@
             <div class="row category-heading">
                 <div class="col-xs-12 text-center">
                     <paper-button class="update-button" on-tap="_updateOrganisationDetails">
-                        Update Business Profile
+                        Save
                     </paper-button>
                 </div>
             </div>
@@ -123,32 +122,37 @@
 
 
 			_updateOrganisationDetails() {
-				let data = {};
-				data.name = this._businessProfile.name;
-				data.code = this._businessProfile.code;
-				data.types = this._businessProfile.type;
-				data.notificationSourceEmail = this._businessProfile.data;
-
-				data.billingProfile = {};
-				data.billingProfile.businessName = this._billingProfile.businessName;
-				data.billingProfile.vatNumber = this._billingProfile.vatNumber;
-				data.billingProfile.contactName = this._billingProfile.contactName;
-				data.billingProfile.address = this._billingProfile.address;
-				data.billingProfile.phoneNumber = this._billingProfile.phoneNumber;
-				data.billingProfile.email = this._billingProfile.email;
+				let data = {
+					name: this._businessProfile.name,
+					code: this._businessProfile.code,
+					// types: this._businessProfile.types,
+					// timezoneOffset: 2,
+					// registeredDirectly: this._businessProfile.registeredDirectly,
+					// industry: this._businessProfile.industries,
+					organisationProfile: {
+						contactPerson: this._businessProfile.profile.contactPerson,
+						contactNumber: this._businessProfile.profile.contactNumber,
+					},
+					operatingHours: this._businessProfile.operatingHours,
+					currencyCode: "ZAR",
+					billingProfile: this._businessProfile.billingProfile
+				};
 
 				this.$.organisationApi.updateOrganisation(this._organisationId, data)
 					.then((request) => {
-						this.$.toast.successStay("Business Profile Updated");
-						// This will become a paramater as soon it is being used at different places
-						this.dispatchEvent(new CustomEvent('change-page', {
-							bubbles: true, composed: true, detail:
-								{
-									url: '/business-profile',
-									data: {name: 'refresh', value: true}
-								},
-						}));
-					})
+					this.$.toast.successStay("Business Profile Updated");
+				// This will become a paramater as soon it is being used at different places
+				this.dispatchEvent(new CustomEvent('change-page', {
+					bubbles: true, composed: true, detail:
+						{
+							url: '/business-profile',
+							data: {name: 'refresh', value: true}
+						},
+				}));
+			})
+			.catch((error) => {
+					console.error(error.message);
+			})
 			}
 		}
 
