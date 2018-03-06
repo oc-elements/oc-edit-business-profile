@@ -7,7 +7,8 @@
     "oc-core-utils": "git://github.com/oc-elements/oc-core-utils#2.x",
     "oc-toast": "git://github.com/oc-elements/oc-toast#2.x",
     "oc-geo-lookup": "git://github.com/oc-elements/oc-geo-lookup",
-    "oc-leaflet-map": "git://github.com/oc-elements/oc-leaflet-map"
+    "oc-leaflet-map": "git://github.com/oc-elements/oc-leaflet-map",
+    "vaadin-upload": "vaadin/vaadin-upload#4.0.0-beta1"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
