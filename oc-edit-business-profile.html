@@ -163,13 +163,8 @@
 					}.bind(this));
 			}
 
-
-			_updateOrganisationDetails() {
-				// If there is an image uploaded, upload the image to the backend
-				if (this._shopImage)
-					this._uploadImage();
-
-				let data = {
+			getOrgData() {
+				return {
 					name: this._businessProfile.name,
 					code: this._businessProfile.code,
 					// types: this._businessProfile.types,
@@ -184,40 +179,53 @@
 					currencyCode: 'ZAR',
 					billingProfile: this._businessProfile.billingProfile,
 				};
+			}
 
-				this.$.organisationApi.updateOrganisation(this._organisationId, data)
-					.then((request) => {
-						this._getOrganisation();
-						this.$.toast.successStay('Business Profile Updated');
-						this.isActive = false;
+			_updateOrganisationDetails() {
+				/* If there is a image upload. It will be uploaded on save then if
+				* there is no errors organisation will be updated. */
+				const imageUploadPromise = new Promise((resolve, reject) => {
+					if (this._shopImage)
+						this._uploadImage(resolve, reject);
+					else
+						resolve();
+				});
 
-						// This will become a paramater as soon it is being used at different places
-						this.dispatchEvent(new CustomEvent('change-page', {
-							bubbles: true, composed: true, detail:
-								{
-									url: '/business-profile',
-									data: {name: 'refresh', value: true},
-								},
-						}));
-					})
-					.catch((error) => {
-						console.error(error.message);
-					});
+				imageUploadPromise.then(() => {
+					this.$.organisationApi.updateOrganisation(this._organisationId, this.getOrgData())
+						.then((request) => {
+							this._getOrganisation();
+							this.$.toast.successStay('Business Profile Updated');
+							this.isActive = false;
+
+							// This will become a paramater as soon it is being used at different places
+							this.dispatchEvent(new CustomEvent('change-page', {
+								bubbles: true, composed: true, detail:
+									{
+										url: '/business-profile',
+										data: {name: 'refresh', value: true},
+									},
+							}));
+						})
+						.catch((error) => {
+							console.error(error.message);
+						});
+				});
 			}
 
 			// Build formdata object and upload image to the backend
-			_uploadImage() {
+			_uploadImage(resolve) {
 				const file = new Blob([this._shopImage], {type: this._shopImage.type});
 
 				const formData = new FormData();
 				formData.append('image', file);
 				this.$.organisationApi.uploadOrganisationImage(this._organisationId, formData)
 					.then(() => {
-						this._getOrganisation();
+						resolve();
 					})
 					.catch((error) => {
-						this.$.toast.failed(error.message);
 						console.error(error.message);
+						this.$.toast.failed('Failed to upload image!: ' + error.message);
 					});
 			}
 		}
