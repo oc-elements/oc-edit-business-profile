@@ -4,6 +4,7 @@
 <link rel="import" href="../oc-organisation-api/oc-organisation-api.html">
 <link rel="import" href="../oc-core-utils/oc-store.html">
 <link rel="import" href="../oc-toast/oc-toast.html">
+<link rel="import" href="../oc-form-container/oc-form-container.html">
 <link rel="import" href="../vaadin-upload/theme/lumo/vaadin-upload.html">
 <link rel="import" href="../../src/oc-button-styles.html">
 
@@ -11,38 +12,17 @@
     <template>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <style include="shop-button shop-button oc-button-styles" is="custom-style">
-
             :host {
                 display: block;
-                background: #fff;
-                color: #000;
             }
-
-            .category-heading {
-                border-top: 1px #cecece solid;
-                border-bottom: 1px #cecece solid;
-                background: #f8f8f8;
-                color: #000;
-            }
-
-            h3 {
-                font-size: 1.13em !important;
-                margin: 10px 0 !important;
-            }
-
         </style>
 
         <oc-organisation-api id="organisationApi"></oc-organisation-api>
         <oc-toast id="toast"></oc-toast>
 
-        <div class="container-fluid">
+        <oc-form-container header="Business Profile">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="row category-heading">
-                        <div class="col-xs-12">
-                            <h3>Business Profile</h3>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <paper-input type="text" label="Company Name"
@@ -72,15 +52,12 @@
 
                 </div>
             </div>
-            <!--TODO: dom if you already have a business account -->
-            <div class="row category-heading">
-                <div class="col-xs-12 text-center">
-                    <paper-button class="update-button primary-button" on-tap="_updateOrganisationDetails">
-                        Save
-                    </paper-button>
-                </div>
+            <div class="col-xs-12 text-center" slot="button">
+                <paper-button class="update-button primary-button" on-tap="_updateOrganisationDetails">
+                    Save
+                </paper-button>
             </div>
-        </div>
+        </oc-form-container>
     </template>
 
     <script>
