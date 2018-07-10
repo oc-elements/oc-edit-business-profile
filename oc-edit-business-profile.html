@@ -10,7 +10,7 @@
 
 <dom-module id="oc-edit-business-profile">
     <template>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <style include="shop-button shop-button oc-button-styles" is="custom-style">
             :host {
                 display: block;
@@ -22,40 +22,36 @@
 
         <oc-form-container header="Business Profile">
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <paper-input type="text" label="Company Name"
-                                         value="{{_businessProfile.name}}"></paper-input>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <paper-input label="Company Code" value="{{_businessProfile.code}}" readonly disabled></paper-input>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <paper-input type="tel" value="{{_businessProfile.profile.contactNumber}}"
-                                         label="Contact Number"></paper-input>
-                        </div>
-                    </div>
-                    <div class="row" hidden="[[!showFileUploader]]">
-                        <div class="col-xs-12">
-                            <label>Business Profile Picture</label>
-                            <vaadin-upload id="fileUpload" on-upload-before="_uploadBefore" max-files="1">
-                                <img src="[[_shopImageSrc]]" alt="[[item.title]]">
-                            </vaadin-upload>
-                        </div>
-                    </div>
-
+                <div class="col-12">
+                    <paper-input type="text" label="Company Name"
+                                 value="{{_businessProfile.name}}"></paper-input>
                 </div>
             </div>
-            <div class="col-xs-12 text-center" slot="button">
-                <paper-button class="update-button primary-button" on-tap="_updateOrganisationDetails">
-                    Save
-                </paper-button>
+            <div class="row">
+                <div class="col-12">
+                    <paper-input label="Company Code" value="{{_businessProfile.code}}" readonly disabled></paper-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <paper-input type="tel" value="{{_businessProfile.profile.contactNumber}}"
+                                 label="Contact Number"></paper-input>
+                </div>
+            </div>
+            <div class="row" hidden="[[!showFileUploader]]">
+                <div class="col-12">
+                    <label>Business Profile Picture</label>
+                    <vaadin-upload id="fileUpload" on-upload-before="_uploadBefore" max-files="1">
+                        <img src="[[_shopImageSrc]]" alt="[[item.title]]">
+                    </vaadin-upload>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center" slot="button">
+                    <paper-button class="update-button primary-button" on-tap="_updateOrganisationDetails">
+                        Save
+                    </paper-button>
+                </div>
             </div>
         </oc-form-container>
     </template>
